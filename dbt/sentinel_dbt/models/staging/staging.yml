@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: stg_telemetry
+    description: "Cleansed and standardized telemetry data from the AMR fleet. One record per event."
+    columns:
+      - name: event_timestamp
+        description: "The timestamp when the event was recorded by the robot."
+        tests:
+          - unique
+          - not_null
+
+      - name: robotid
+        description: "The unique identifier for the robot."
+        tests:
+          - not_null

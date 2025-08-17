@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: raw_data # Changed name for clarity
+    database: AwsDataCatalog # Explicitly state the catalog
+    schema: amr_fleet_database # Explicitly state the database/schema
+    tables:
+      - name: telemetry
