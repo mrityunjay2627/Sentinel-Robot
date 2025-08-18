@@ -12,7 +12,7 @@ VENV_PYTHON_PATH = "/usr/local/airflow/dbt_venv/bin/python"
 with DAG(
     dag_id="sentinel_daily_dbt_run",
     start_date=pendulum.datetime(2025, 8, 1, tz="UTC"),
-    schedule_interval="0 2 * * *",  # Run daily at 2 AM UTC
+    schedule_interval="0 6 * * *",  # Run daily at 2 AM UTC
     catchup=False,
     tags=["sentinel", "dbt"],
 ) as dag:
