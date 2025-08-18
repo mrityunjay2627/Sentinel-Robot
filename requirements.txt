@@ -1,3 +1,7 @@
 boto3
 dbt-core 
 dbt-athena-community
+apache-airflow
+apache-airflow-providers-cncf-kubernetes 
+apache-airflow-providers-docker
+apache-airflow-providers-standard

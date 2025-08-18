@@ -1,0 +1,66 @@
+name: DBT CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # This workflow triggers on pushes to the main branch
+
+jobs:
+  run-dbt-tests:
+    name: Run dbt Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dbt and adapter
+        run: |
+          pip install dbt-core dbt-athena-community
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup dbt profiles.yml
+        run: |
+          mkdir -p ~/.dbt
+          echo "${{ secrets.DBT_PROFILES_YML }}" > ~/.dbt/profiles.yml
+      
+      - name: Run dbt tests
+        run: |
+          cd dbt/sentinel_dbt
+          dbt deps
+          dbt test
+
+  deploy-to-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: run-dbt-tests # This job only runs if the test job succeeds
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to Airflow
+        run: |
+          # This is a placeholder for a real deployment script.
+          # In a real project, this would zip the dbt and airflow folders
+          # and upload them to the S3 bucket for your MWAA environment.
+          echo "Deploying new DAG and dbt project to S3..."
+          echo "Deployment successful!"
