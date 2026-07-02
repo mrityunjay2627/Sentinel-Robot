@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_sensor_readings
+    description: Cleaned staging view for raw AMR sensor readings with data-quality flags.
+    columns:
+      - name: reading_id
+        tests:
+          - not_null
+      - name: robot_id
+        tests:
+          - not_null
+      - name: reading_ts_raw
+        tests:
+          - not_null
+      - name: operational_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['ACTIVE', 'IDLE', 'CHARGING', 'ERROR', 'MAINTENANCE', 'OFFLINE']

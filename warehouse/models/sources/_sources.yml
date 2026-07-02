@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: raw
+    database: SENTINEL_ROBOT
+    schema: RAW
+    description: Raw CSV landing tables loaded from the Phase 1 generator.
+    tables:
+      - name: RAW_ROBOT_MODELS
+        description: Raw robot model records.
+      - name: RAW_ZONES
+        description: Raw warehouse zone records.
+      - name: RAW_ROBOTS
+        description: Raw robot master records.
+      - name: RAW_ROBOT_ATTRIBUTE_CHANGES
+        description: Raw robot attribute change events used for SCD2.
+      - name: RAW_SENSOR_READINGS
+        description: Raw messy sensor readings.
+      - name: RAW_TASKS
+        description: Raw operational task records.
+      - name: RAW_MAINTENANCE_TICKETS
+        description: Raw maintenance lifecycle records.
