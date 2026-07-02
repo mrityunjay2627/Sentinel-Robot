@@ -221,3 +221,15 @@ override.tf.json
 
 # Python Virtual Environment
 .venv/
+
+# Local generated data
+data/
+*.parquet
+*.csv
+chaos_manifest.json
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/

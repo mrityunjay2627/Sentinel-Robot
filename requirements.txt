@@ -1,7 +1,35 @@
-boto3
-dbt-core 
-dbt-athena-community
-apache-airflow
-apache-airflow-providers-cncf-kubernetes 
-apache-airflow-providers-docker
-apache-airflow-providers-standard
+# ── Data Generator ──────────────────────────────────────────────
+numpy>=1.24,<2.0
+pandas>=2.0
+pyarrow>=14.0
+
+# ── Warehouse (local dev: DuckDB; prod: Snowflake) ─────────────
+dbt-core>=1.8,<1.12
+# dbt-duckdb>=1.8
+dbt-snowflake>=1.8          # uncomment when Snowflake account is active
+
+# ── OLTP Landing ────────────────────────────────────────────────
+psycopg2-binary>=2.9
+
+# ── Orchestration ───────────────────────────────────────────────
+apache-airflow>=2.8
+
+# ── Scale / Spark ───────────────────────────────────────────────
+pyspark>=3.5
+
+# ── Streaming ───────────────────────────────────────────────────
+kafka-python>=2.0
+
+# ── Serving ─────────────────────────────────────────────────────
+redis>=5.0
+
+# ── ML Pillar ───────────────────────────────────────────────────
+xgboost>=2.0
+scikit-learn>=1.3
+
+# ── Infrastructure (AWS) ────────────────────────────────────────
+boto3>=1.28
+
+# ── Dev / Testing ───────────────────────────────────────────────
+pytest>=7.0
+python-dotenv>=1.0
