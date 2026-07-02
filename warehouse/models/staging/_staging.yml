@@ -18,3 +18,93 @@ models:
           - accepted_values:
               arguments:
                 values: ['ACTIVE', 'IDLE', 'CHARGING', 'ERROR', 'MAINTENANCE', 'OFFLINE']
+
+  - name: stg_robot_models
+    description: Cleaned robot model dimension staging table.
+    columns:
+      - name: model_id
+        tests:
+          - not_null
+          - unique
+      - name: model_name
+        tests:
+          - not_null
+
+  - name: stg_zones
+    description: Cleaned warehouse zone staging table.
+    columns:
+      - name: zone_id
+        tests:
+          - not_null
+          - unique
+      - name: zone_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['STORAGE', 'PICKING', 'PACKING', 'CHARGING', 'TRANSIT', 'STAGING', 'SHIPPING', 'RECEIVING']
+
+  - name: stg_robots
+    description: Cleaned robot master staging table.
+    columns:
+      - name: robot_id
+        tests:
+          - not_null
+          - unique
+      - name: model_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_robot_models')
+                field: model_id
+      - name: home_zone_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_zones')
+                field: zone_id
+
+  - name: stg_robot_attribute_changes
+    description: Cleaned robot attribute change events used to build SCD Type 2 robot dimension.
+    columns:
+      - name: change_id
+        tests:
+          - not_null
+          - unique
+      - name: robot_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_robots')
+                field: robot_id
+      - name: attribute
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['FIRMWARE', 'ZONE', 'TEAM']
+
+  - name: stg_tasks
+    description: Cleaned operational task events.
+    columns:
+      - name: task_id
+        tests:
+          - not_null
+          - unique
+      - name: robot_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_robots')
+                field: robot_id
+      - name: task_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['PICK', 'PUT', 'MOVE', 'INSPECT', 'CHARGE', 'IDLE']
+      - name: status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'FAILED', 'CANCELLED', 'TIMEOUT']
