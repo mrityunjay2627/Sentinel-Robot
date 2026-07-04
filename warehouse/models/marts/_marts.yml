@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: obt_sensor_readings
+    description: One Big Table joining sensor facts to robot, model, and zone dimensions.
+    columns:
+      - name: sensor_reading_sk
+        tests:
+          - not_null
+          - unique
+      - name: reading_id
+        tests:
+          - not_null
+          - unique
+      - name: robot_id
+        tests:
+          - not_null
+
+  - name: fct_features_training
+    description: Warehouse feature mart for predictive-maintenance modeling.
+    columns:
+      - name: robot_id
+        tests:
+          - not_null
+      - name: as_of_date
+        tests:
+          - not_null

@@ -46,8 +46,29 @@ cleaned as (
         try_to_number(error_count) as error_count,
 
         case
-            when assigned_ts is not null and started_ts is not null
-             and try_to_timestamp_ntz(started_ts) < try_to_timestamp_ntz(assigned_ts)
+            when task_id is null or trim(task_id) = '' then true
+            else false
+        end as is_missing_task_id,
+
+        case
+            when robot_id is null or trim(robot_id) = '' then true
+            else false
+        end as is_missing_robot_id,
+
+        case
+            when upper(trim(task_type)) not in ('PICK', 'PUT', 'MOVE', 'INSPECT', 'CHARGE', 'IDLE') then true
+            else false
+        end as is_invalid_task_type,
+
+        case
+            when upper(trim(status)) not in ('ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'FAILED', 'CANCELLED', 'TIMEOUT') then true
+            else false
+        end as is_invalid_status,
+
+        case
+            when assigned_ts is not null
+             and started_ts is not null
+             and started_ts < assigned_ts
             then true
             else false
         end as is_task_lifecycle_invalid,

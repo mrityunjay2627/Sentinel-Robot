@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: fct_sensor_reading
+    description: Transactional fact table with one row per AMR sensor reading.
+    columns:
+      - name: sensor_reading_sk
+        tests:
+          - not_null
+          - unique
+      - name: reading_id
+        tests:
+          - not_null
+          - unique
+      - name: robot_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_robot')
+                field: robot_id
+      - name: robot_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_robot')
+                field: robot_sk
+
+  - name: fct_robot_daily
+    description: Periodic daily robot health snapshot fact.
+    columns:
+      - name: robot_daily_sk
+        tests:
+          - not_null
+          - unique
+      - name: robot_id
+        tests:
+          - not_null
+      - name: report_date
+        tests:
+          - not_null
+      - name: report_date_key
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+
+  - name: fct_maintenance
+    description: Accumulating maintenance lifecycle fact. Placeholder until full data run has maintenance tickets.
+    columns:
+      - name: maintenance_sk
